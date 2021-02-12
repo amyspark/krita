@@ -1,9 +1,9 @@
 /*
  *  SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
- *  SPDX-FileCopyrightText: 2016, 2017, 2020 L. E. Segovia <amy@amyspark.me>
+ *  SPDX-FileCopyrightText: 2016, 2017, 2020, 2021 L. E. Segovia <amy@amyspark.me>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
-*/
+ */
 
 #ifndef _KO_LAB_COLORSPACE_TRAITS_H_
 #define _KO_LAB_COLORSPACE_TRAITS_H_
@@ -25,12 +25,12 @@
  */
 template<typename _channels_type_>
 struct KoLabTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
-    typedef _channels_type_ channels_type;
-    typedef KoColorSpaceTrait<_channels_type_, 4, 3> parent;
-    typedef KoLabColorSpaceMathsTraits<channels_type> math_trait;
-    static const qint32 L_pos = 0;
-    static const qint32 a_pos = 1;
-    static const qint32 b_pos = 2;
+    using channels_type = _channels_type_;
+    using parent = KoColorSpaceTrait<_channels_type_, 4, 3>;
+    using math_trait = KoLabColorSpaceMathsTraits<channels_type>;
+    static constexpr qint32 L_pos = 0;
+    static constexpr qint32 a_pos = 1;
+    static constexpr qint32 b_pos = 2;
 
     /**
      * An Lab pixel
@@ -81,7 +81,7 @@ struct KoLabTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
         channels_type c = parent::nativeArray(pixel)[channelIndex];
         switch (channelIndex) {
         case L_pos:
-            return QString().setNum(100.0 * qBound((qreal)0, ((qreal)c) / math_trait::unitValueL, (qreal)math_trait::unitValueL));
+            return QString().setNum(100.0 * ((qreal)c) / math_trait::unitValueL);
         case a_pos:
         case b_pos:
             if (c <= math_trait::halfValueAB) {
@@ -89,8 +89,8 @@ struct KoLabTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
             } else {
                 return QString().setNum(100.0 * (qreal)(0.5 + (c - math_trait::halfValueAB) / (2.0 * (math_trait::unitValueAB - math_trait::halfValueAB))));
             }
-        case 3:
-            return QString().setNum(100.0 * qBound((qreal)0, ((qreal)c) / math_trait::unitValue, (qreal)math_trait::unitValue));
+        case parent::alpha_pos:
+            return QString().setNum(100.0 * ((qreal)c) / math_trait::unitValue);
         default:
             return QString("Error");
         }
@@ -114,7 +114,7 @@ struct KoLabTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
                 }
                 break;
             // As per KoChannelInfo alpha channels are [0..1]
-            case 3:
+            case parent::alpha_pos:
             default:
                 channels[i] = (qreal)c / math_trait::unitValue;
                 break;
@@ -129,27 +129,23 @@ struct KoLabTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
             float b = 0;
             switch (i) {
             case L_pos:
-                b = qBound((float)math_trait::zeroValueL,
-                           (float)math_trait::unitValueL * values[i],
-                           (float)math_trait::unitValueL);
+                b = (float)math_trait::unitValueL * values[i];
                 break;
             case a_pos:
             case b_pos:
                 if (values[i] <= 0.5) {
-                    b = qBound((float)math_trait::zeroValueAB,
+                    b = qBound((float)math_trait::min,
                                (float)(math_trait::zeroValueAB + 2.0 * values[i] * (math_trait::halfValueAB - math_trait::zeroValueAB)),
                                (float)math_trait::halfValueAB);
                 }
                 else {
                     b = qBound((float)math_trait::halfValueAB,
                                (float)(math_trait::halfValueAB + 2.0 * (values[i] - 0.5) * (math_trait::unitValueAB - math_trait::halfValueAB)),
-                               (float)math_trait::unitValueAB);
+                               (float)math_trait::max);
                 }
                 break;
-            case 3:
-                b = qBound((float)math_trait::min,
-                           (float)math_trait::unitValue * values[i],
-                           (float)math_trait::unitValue);
+            case parent::alpha_pos:
+                b = (float)math_trait::unitValue * values[i];
             default:
                 break;
             }

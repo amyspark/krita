@@ -7,13 +7,13 @@
 #ifndef _KO_COLOR_SPACE_CONSTANTS_H_
 #define _KO_COLOR_SPACE_CONSTANTS_H_
 
-#include <climits>
+#include <limits>
 #include <QtGlobal>
 
 // TODO: find a better place or way to define those stuff
-const quint8 OPACITY_TRANSPARENT_U8 = 0;
-const quint8 OPACITY_OPAQUE_U8 = UCHAR_MAX;
-const qreal OPACITY_TRANSPARENT_F = 0.0;
-const qreal OPACITY_OPAQUE_F = 1.0;
+static constexpr quint8 OPACITY_TRANSPARENT_U8 = std::numeric_limits<quint8>::min();
+static constexpr quint8 OPACITY_OPAQUE_U8 = std::numeric_limits<quint8>::max();
+static constexpr qreal OPACITY_TRANSPARENT_F = 0.0;
+static constexpr qreal OPACITY_OPAQUE_F = 1.0;
 
 #endif

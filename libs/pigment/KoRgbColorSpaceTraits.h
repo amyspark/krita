@@ -1,8 +1,9 @@
 /*
- *  SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2021 L. E. Segovia <amy@amyspark.me>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
-*/
+ */
 
 #ifndef _KO_RGB_COLORSPACE_TRAITS_H_
 #define _KO_RGB_COLORSPACE_TRAITS_H_
@@ -13,11 +14,11 @@
  */
 template<typename _channels_type_>
 struct KoRgbTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
-    typedef _channels_type_ channels_type;
-    typedef KoColorSpaceTrait<_channels_type_, 4, 3> parent;
-    static const qint32 red_pos = 0;
-    static const qint32 green_pos = 1;
-    static const qint32 blue_pos = 2;
+    using channels_type = _channels_type_;
+    using parent = KoColorSpaceTrait<_channels_type_, 4, 3>;
+    static constexpr qint32 red_pos = 0;
+    static constexpr qint32 green_pos = 1;
+    static constexpr qint32 blue_pos = 2;
     /**
      * An RGB pixel
      */

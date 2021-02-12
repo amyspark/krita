@@ -16,11 +16,3 @@ const half KoCmykColorSpaceMathsTraits<half>::zeroValueCMYK = 0.0;
 const half KoCmykColorSpaceMathsTraits<half>::unitValueCMYK = 100.0;
 const half KoCmykColorSpaceMathsTraits<half>::halfValueCMYK = 50.0;
 #endif
-
-const float KoCmykColorSpaceMathsTraits<float>::zeroValueCMYK = 0.0;
-const float KoCmykColorSpaceMathsTraits<float>::unitValueCMYK = 100.0;
-const float KoCmykColorSpaceMathsTraits<float>::halfValueCMYK = 50.0;
-
-const double KoCmykColorSpaceMathsTraits<double>::zeroValueCMYK = 0.0;
-const double KoCmykColorSpaceMathsTraits<double>::unitValueCMYK = 100.0;
-const double KoCmykColorSpaceMathsTraits<double>::halfValueCMYK = 50.0;

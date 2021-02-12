@@ -1,12 +1,14 @@
 /*
- *  SPDX-FileCopyrightText: 2006, 2007, 2010 Cyrille Berger <cberger@cberger.bet
+ * SPDX-FileCopyrightText: 2006, 2007, 2010 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2021 L. E. Segovia <amy@amyspark.me>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
-*/
+ */
 
 #ifndef KOCOLORSPACEMATHS_H_
 #define KOCOLORSPACEMATHS_H_
 
+#include <cfloat>
 #include <cmath>
 #include <limits>
 
@@ -43,60 +45,61 @@ template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<quint8>
 {
 public:
-    typedef qint32 compositetype;
-    static const quint8 zeroValue = 0;
-    static const quint8 unitValue = 0x00FF;
-    static const quint8 halfValue = 0x00FF / 2;
-    static const quint8 max = 0x00FF;
-    static const quint8 min = 0;
-    static const quint8 epsilon = 1;
-    static const qint8 bits = 8;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    using compositetype = qint32;
+    static constexpr quint8 zeroValue = 0;
+    static constexpr quint8 unitValue = 0x00FF;
+    static constexpr quint8 halfValue = 0x00FF / 2;
+    static constexpr quint8 max = 0x00FF;
+    static constexpr quint8 min = 0;
+    static constexpr quint8 epsilon = 1;
+    static constexpr qint8 bits = 8;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = KoChannelInfo::UINT8;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<quint16>
 {
 public:
-    typedef qint64 compositetype;
-    static const quint16 zeroValue = 0;
-    static const quint16 unitValue = 0xFFFF;
-    static const quint16 halfValue = 0xFFFF / 2;
-    static const quint16 max = 0xFFFF;
-    static const quint16 min = 0;
-    static const quint16 epsilon = 1;
-    static const qint8 bits = 16;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    using compositetype = qint64;
+    static constexpr quint16 zeroValue = 0;
+    static constexpr quint16 unitValue = 0xFFFF;
+    static constexpr quint16 halfValue = 0xFFFF / 2;
+    static constexpr quint16 max = 0xFFFF;
+    static constexpr quint16 min = 0;
+    static constexpr quint16 epsilon = 1;
+    static constexpr qint8 bits = 16;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = 
+    KoChannelInfo::UINT16;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<qint16>
 {
 public:
-    typedef qint64 compositetype;
-    static const qint16 zeroValue = 0;
-    static const qint16 unitValue = 32767;
-    static const qint16 halfValue = 32767 / 2;
-    static const qint16 max = 32767;
-    static const qint16 min = -32768;
-    static const qint16 epsilon = 1;
-    static const qint8 bits = 16;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    using compositetype = qint64;
+    static constexpr qint16 zeroValue = 0;
+    static constexpr qint16 unitValue = 32767;
+    static constexpr qint16 halfValue = 32767 / 2;
+    static constexpr qint16 max = 32767;
+    static constexpr qint16 min = -32768;
+    static constexpr qint16 epsilon = 1;
+    static constexpr qint8 bits = 16;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = KoChannelInfo::INT16;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<quint32>
 {
 public:
-    typedef qint64 compositetype;
-    static const quint32 zeroValue = 0;
-    static const quint32 unitValue = 0xFFFFFFFF;
-    static const quint32 halfValue = 0xFFFFFFFF / 2;
-    static const quint32 max = 0xFFFFFFFF;
-    static const quint32 min = 0;
-    static const quint32 epsilon = 1;
-    static const qint8 bits = 32;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    using compositetype = qint64;
+    static constexpr quint32 zeroValue = 0;
+    static constexpr quint32 unitValue = 0xFFFFFFFF;
+    static constexpr quint32 halfValue = 0xFFFFFFFF / 2;
+    static constexpr quint32 max = 0xFFFFFFFF;
+    static constexpr quint32 min = 0;
+    static constexpr quint32 epsilon = 1;
+    static constexpr qint8 bits = 32;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = KoChannelInfo::UINT32;
 };
 
 #include <KoConfig.h>
@@ -107,15 +110,15 @@ template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<half>
 {
 public:
-    typedef double compositetype;
+    using compositetype = double;
     static const half zeroValue;
     static const half unitValue;
     static const half halfValue;
     static const half max;
     static const half min;
     static const half epsilon;
-    static const qint8 bits = 16;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    static constexpr qint8 bits = 16;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = KoChannelInfo::FLOAT16;
 };
 #endif
 
@@ -123,76 +126,47 @@ template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<float>
 {
 public:
-    typedef double compositetype;
-    static const float zeroValue;
-    static const float unitValue;
-    static const float halfValue;
-    static const float max;
-    static const float min;
-    static const float epsilon;
-    static const qint8 bits = 32;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    using compositetype = double;
+    static constexpr float zeroValue = 0;
+    static constexpr float unitValue = 1.0;
+    static constexpr float halfValue = 0.5;
+    static constexpr float max = FLT_MAX;
+    static constexpr float min = FLT_MIN;
+    static constexpr float epsilon = FLT_EPSILON;
+    static constexpr qint8 bits = 32;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = KoChannelInfo::FLOAT32;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoColorSpaceMathsTraits<double>
 {
 public:
-    typedef double compositetype;
-    static const double zeroValue;
-    static const double unitValue;
-    static const double halfValue;
-    static const double max;
-    static const double min;
-    static const double epsilon;
-    static const qint8 bits = 64;
-    static const KoChannelInfo::enumChannelValueType channelValueType;
+    using compositetype = double;
+    static constexpr double zeroValue = 0;
+    static constexpr double unitValue = 1.0;
+    static constexpr double halfValue = 0.5;
+    static constexpr double max = DBL_MAX;
+    static constexpr double min = DBL_MIN;
+    static constexpr double epsilon = DBL_EPSILON;
+    static constexpr qint8 bits = 64;
+    static constexpr KoChannelInfo::enumChannelValueType channelValueType = KoChannelInfo::FLOAT64;
 };
 
-#ifdef Q_CC_MSVC
-// MSVC do not have lrint
-
-const double _double2fixmagic = 68719476736.0*1.5;
-const qint32 _shiftamt        = 16;                    //16.16 fixed point representation,
-
-#if Q_BYTE_ORDER == Q_BIG_ENDIAN
-        #define iexp_                           0
-        #define iman_                           1
-#else
-        #define iexp_                           1
-        #define iman_                           0
-#endif //BigEndian_
-
-inline int float2int(double val)
+inline long float2int(float x)
 {
-    val = val + _double2fixmagic;
-    return ((int*)&val)[iman_] >> _shiftamt; 
+    return std::lrintf(x);
 }
 
-inline int float2int(float val)
+inline long float2int(double x)
 {
-    return float2int((double)val);
+    return std::lrint(x);
 }
 
-#else
-
-inline int float2int(float x)
-{
-    return lrintf(x);
-}
-
-inline int float2int(double x)
-{
-    return lrint(x);
-}
-
-#endif
-
-template<typename _T_>
+template<typename T>
 struct KoIntegerToFloat {
-  inline float operator()(_T_ f) const
+  inline float operator()(T f) const
   {
-    return f / float(KoColorSpaceMathsTraits<_T_>::max);
+    return f / float(KoColorSpaceMathsTraits<T>::max);
   }
 };
 
@@ -207,24 +181,24 @@ struct KoLuts {
  * space. It's intended to be generic, but some specialization exists
  * either for optimization or just for being buildable.
  *
- * @param _T some numerical type with an existing trait
- * @param _Tdst some other numerical type with an existing trait, it is
+ * @param T some numerical type with an existing trait
+ * @param Tdst some other numerical type with an existing trait, it is
  *              only needed if different of _T
  */
-template < typename _T, typename _Tdst = _T >
+template < typename T, typename Tdst = T >
 class KoColorSpaceMaths
 {
-    typedef KoColorSpaceMathsTraits<_T> traits;
-    typedef typename traits::compositetype src_compositetype;
-    typedef typename KoColorSpaceMathsTraits<_Tdst>::compositetype dst_compositetype;
+    using traits = KoColorSpaceMathsTraits<T>;
+    using src_compositetype = typename traits::compositetype;
+    using dst_compositetype = typename KoColorSpaceMathsTraits<Tdst>::compositetype;
     
 public:
-    inline static _Tdst multiply(_T a, _Tdst b) {
-        return (dst_compositetype(a)*b) /  KoColorSpaceMathsTraits<_Tdst>::unitValue;
+    inline static Tdst multiply(T a, Tdst b) {
+        return (dst_compositetype(a)*b) /  KoColorSpaceMathsTraits<Tdst>::unitValue;
     }
     
-    inline static _Tdst multiply(_T a, _Tdst b, _Tdst c) {
-        return (dst_compositetype(a)*b*c) / (dst_compositetype(KoColorSpaceMathsTraits<_Tdst>::unitValue) * KoColorSpaceMathsTraits<_T>::unitValue);
+    inline static Tdst multiply(T a, Tdst b, Tdst c) {
+        return (dst_compositetype(a)*b*c) / (dst_compositetype(KoColorSpaceMathsTraits<Tdst>::unitValue) * KoColorSpaceMathsTraits<T>::unitValue);
     }
 
     /**
@@ -232,31 +206,34 @@ public:
      * @param a
      * @param b
      */
-    inline static dst_compositetype divide(_T a, _Tdst b) {
-        return (dst_compositetype(a) *  KoColorSpaceMathsTraits<_Tdst>::unitValue) / b;
+    inline static dst_compositetype divide(T a, Tdst b) {
+        return (dst_compositetype(a) *  KoColorSpaceMathsTraits<Tdst>::unitValue) / b;
     }
     
-    inline static dst_compositetype modulus(_T a, _Tdst b) {
-        return (dst_compositetype(a) - floor(dst_compositetype(a)/((b != (KoColorSpaceMathsTraits<_T>::zeroValue - traits::epsilon) ? b : KoColorSpaceMathsTraits<_T>::zeroValue)  + traits::epsilon))*(b + traits::epsilon));
+    inline static dst_compositetype modulus(T a, Tdst b) {
+        return (dst_compositetype(a) - floor(dst_compositetype(a)/((b != (KoColorSpaceMathsTraits<T>::zeroValue - traits::epsilon) ? b : KoColorSpaceMathsTraits<T>::zeroValue)  + traits::epsilon))*(b + traits::epsilon));
     }
 
-    inline static dst_compositetype xor(_T a, _Tdst b) {
-        return (int (a *  std::numeric_limits<int>::max() - traits::epsilon) ^ int (b *  std::numeric_limits<int>::max() - traits::epsilon));
+    inline static dst_compositetype xor(T a, Tdst b)
+    {
+        return (int(a * traits::max - traits::epsilon) ^ int(b * traits::max - traits::epsilon));
     }
 
-    inline static dst_compositetype and(_T a, _Tdst b) {
-        return (int (a *  std::numeric_limits<int>::max()  - traits::epsilon) & int (b *  std::numeric_limits<int>::max()  - traits::epsilon));
+    inline static dst_compositetype and(T a, Tdst b)
+    {
+        return (int(a * traits::max - traits::epsilon) & int(b * traits::max - traits::epsilon));
     }
-    
-    inline static dst_compositetype or(_T a, _Tdst b) {
-        return (int (a *  std::numeric_limits<int>::max()  - traits::epsilon) | int (b *  std::numeric_limits<int>::max()  - traits::epsilon));
+
+    inline static dst_compositetype or(T a, Tdst b)
+    {
+        return (int(a * traits::max - traits::epsilon) | int(b * traits::max - traits::epsilon));
     }
 
     /**
      * Inversion : unitValue - a
      * @param a
      */
-    inline static _T invert(_T a) {
+    inline static T invert(T a) {
         return traits::unitValue - a;
     }
 
@@ -266,7 +243,7 @@ public:
      * @param b
      * @param alpha
      */
-    inline static _T blend(_T a, _T b, _T alpha) {
+    inline static T blend(T a, T b, T alpha) {
         src_compositetype c = ((src_compositetype(a) - b) * alpha) / traits::unitValue;
         return c + b;
     }
@@ -274,24 +251,24 @@ public:
     /**
      * This function will scale a value of type _T to fit into a _Tdst.
      */
-    inline static _Tdst scaleToA(_T a) {
-        return _Tdst(dst_compositetype(a) * KoColorSpaceMathsTraits<_Tdst>::unitValue / KoColorSpaceMathsTraits<_T>::unitValue);
+    inline static Tdst scaleToA(T a) {
+        return Tdst(dst_compositetype(a) * KoColorSpaceMathsTraits<Tdst>::unitValue / KoColorSpaceMathsTraits<T>::unitValue);
     }
 
     inline static dst_compositetype clamp(dst_compositetype val) {
-        return qBound<dst_compositetype>(KoColorSpaceMathsTraits<_Tdst>::min, val, KoColorSpaceMathsTraits<_Tdst>::max);
+        return qBound<dst_compositetype>(KoColorSpaceMathsTraits<Tdst>::min, val, KoColorSpaceMathsTraits<Tdst>::max);
     }
 
     /**
      * Clamps the composite type on higher border only. That is a fast path
      * for scale-only transformations
      */
-    inline static _Tdst clampAfterScale(dst_compositetype val) {
-        return qMin<dst_compositetype>(val, KoColorSpaceMathsTraits<_Tdst>::max);
+    inline static Tdst clampAfterScale(dst_compositetype val) {
+        return qMin<dst_compositetype>(val, KoColorSpaceMathsTraits<Tdst>::max);
     }
 
-    inline static _T isUnsafeAsDivisor(_T value) {
-        return value == KoColorSpaceMathsTraits<_T>::zeroValue;
+    inline static T isUnsafeAsDivisor(T value) {
+        return value == KoColorSpaceMathsTraits<T>::zeroValue;
     }
 };
 
@@ -637,7 +614,7 @@ namespace Arithmetic
     
     template<class T>
     inline T unionShapeOpacity(T a, T b) {
-        typedef typename KoColorSpaceMathsTraits<T>::compositetype composite_type;
+        using composite_type = typename KoColorSpaceMathsTraits<T>::compositetype;
         return T(composite_type(a) + b - mul(a,b));
     }
     

@@ -49,48 +49,48 @@ template<>
 class KRITAPIGMENT_EXPORT KoLabColorSpaceMathsTraits<quint8> : public KoColorSpaceMathsTraits<quint8>
 {
 public:
-    static const quint8 zeroValueL = 0;
-    static const quint8 unitValueL = 0x00FF;
-    static const quint8 halfValueL = 0x00FF / 2;
-    static const quint8 zeroValueAB = 0;
-    static const quint8 unitValueAB = 0x00FF;
-    static const quint8 halfValueAB = 0x0080;
+    static constexpr quint8 zeroValueL = 0;
+    static constexpr quint8 unitValueL = 0x00FF;
+    static constexpr quint8 halfValueL = 0x00FF / 2;
+    static constexpr quint8 zeroValueAB = 0;
+    static constexpr quint8 unitValueAB = 0x00FF;
+    static constexpr quint8 halfValueAB = 0x0080;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoLabColorSpaceMathsTraits<quint16> : public KoColorSpaceMathsTraits<quint16>
 {
 public:
-    static const quint16 zeroValueL = 0;
-    static const quint16 unitValueL = 0xFFFF;
-    static const quint16 halfValueL = 0xFFFF / 2;
-    static const quint16 zeroValueAB = 0;
-    static const quint16 unitValueAB = 0xFFFF;
-    static const quint16 halfValueAB = 0x8080;
+    static constexpr quint16 zeroValueL = 0;
+    static constexpr quint16 unitValueL = 0xFFFF;
+    static constexpr quint16 halfValueL = 0xFFFF / 2;
+    static constexpr quint16 zeroValueAB = 0;
+    static constexpr quint16 unitValueAB = 0xFFFF;
+    static constexpr quint16 halfValueAB = 0x8080;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoLabColorSpaceMathsTraits<qint16> : public KoColorSpaceMathsTraits<qint16>
 {
 public:
-    static const qint16 zeroValueL = 0;
-    static const qint16 unitValueL = 32767;
-    static const qint16 halfValueL = 32767 / 2;
-    static const qint16 zeroValueAB = 0;
-    static const qint16 unitValueAB = 32767;
-    static const qint16 halfValueAB = 19549;
+    static constexpr qint16 zeroValueL = 0;
+    static constexpr qint16 unitValueL = 32767;
+    static constexpr qint16 halfValueL = 32767 / 2;
+    static constexpr qint16 zeroValueAB = 0;
+    static constexpr qint16 unitValueAB = 32767;
+    static constexpr qint16 halfValueAB = 19549;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoLabColorSpaceMathsTraits<quint32> : public KoColorSpaceMathsTraits<quint32>
 {
 public:
-    static const quint32 zeroValueL = 0;
-    static const quint32 unitValueL = 0xFFFFFFFF;
-    static const quint32 halfValueL = 0xFFFFFFFF / 2;
-    static const quint32 zeroValueAB = 0;
-    static const quint32 unitValueAB = 0xFFFFFFFF;
-    static const quint32 halfValueAB = 0x80808080;
+    static constexpr quint32 zeroValueL = 0;
+    static constexpr quint32 unitValueL = 0xFFFFFFFF;
+    static constexpr quint32 halfValueL = 0xFFFFFFFF / 2;
+    static constexpr quint32 zeroValueAB = 0;
+    static constexpr quint32 unitValueAB = 0xFFFFFFFF;
+    static constexpr quint32 halfValueAB = 0x80808080;
 };
 
 #include <KoConfig.h>
@@ -113,25 +113,27 @@ public:
 template<>
 class KRITAPIGMENT_EXPORT KoLabColorSpaceMathsTraits<float> : public KoColorSpaceMathsTraits<float>
 {
+    // XXX: Check with Wolthera about these ranges
 public:
-    static const float zeroValueL;
-    static const float unitValueL;
-    static const float halfValueL;
-    static const float zeroValueAB;
-    static const float unitValueAB;
-    static const float halfValueAB;
+    static constexpr float zeroValueL = 0.0;
+    static constexpr float unitValueL = 100.0;
+    static constexpr float halfValueL = 50.0;
+    static constexpr float zeroValueAB = -128.0;
+    static constexpr float unitValueAB = 127.0;
+    static constexpr float halfValueAB = 0.0;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoLabColorSpaceMathsTraits<double> : public KoColorSpaceMathsTraits<double>
 {
 public:
-    static const double zeroValueL;
-    static const double unitValueL;
-    static const double halfValueL;
-    static const double zeroValueAB;
-    static const double unitValueAB;
-    static const double halfValueAB;
+    // XXX: Check with Wolthera about these ranges
+    static constexpr double zeroValueL = 0.0;
+    static constexpr double unitValueL = -100.0;
+    static constexpr double halfValueL = 50.0;
+    static constexpr double zeroValueAB = -128.0;
+    static constexpr double unitValueAB = +127.0;
+    static constexpr double halfValueAB = 0.0;
 };
 
 //template<typename _T_>

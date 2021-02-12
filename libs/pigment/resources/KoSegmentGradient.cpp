@@ -32,6 +32,7 @@
 #include <klocalizedstring.h>
 
 #include "KoColor.h"
+#include "KoColorConversions.h"
 #include "KoColorSpace.h"
 #include "KoColorSpaceRegistry.h"
 #include "KoMixColorsOp.h"

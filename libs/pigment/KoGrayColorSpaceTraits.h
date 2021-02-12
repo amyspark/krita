@@ -1,8 +1,9 @@
 /*
- *  SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2021 L. E. Segovia <amy@amyspark.me>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
-*/
+ */
 
 #ifndef _KO_GRAY_COLORSPACE_TRAITS_H_
 #define _KO_GRAY_COLORSPACE_TRAITS_H_
@@ -11,14 +12,15 @@
  * Base class for graya traits, it provides some convenient functions to
  * access gray channels through an explicit API.
  */
+#include "KoColorSpaceTraits.h"
 template<typename _channels_type_>
 struct KoGrayTraits : public KoColorSpaceTrait<_channels_type_, 2, 1> {
     
-    typedef _channels_type_ channels_type;
-    typedef KoColorSpaceTrait<_channels_type_, 2, 1> parent;
-    
-    static const qint32 gray_pos = 0;
-    
+    using channels_type = _channels_type_;
+    using parent = KoColorSpaceTrait<_channels_type_, 2, 1>;
+
+    static constexpr qint32 gray_pos = 0;
+
     /**
      * An grayscale pixel
      */

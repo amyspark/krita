@@ -19,17 +19,3 @@ const half KoLabColorSpaceMathsTraits<half>::zeroValueAB = -128.0;
 const half KoLabColorSpaceMathsTraits<half>::unitValueAB = +127.0;
 const half KoLabColorSpaceMathsTraits<half>::halfValueAB = 0.0;
 #endif
-
-const float KoLabColorSpaceMathsTraits<float>::zeroValueL = 0.0;
-const float KoLabColorSpaceMathsTraits<float>::unitValueL = 100.0;
-const float KoLabColorSpaceMathsTraits<float>::halfValueL = 50.0;
-const float KoLabColorSpaceMathsTraits<float>::zeroValueAB = -128.0;
-const float KoLabColorSpaceMathsTraits<float>::unitValueAB = +127.0;
-const float KoLabColorSpaceMathsTraits<float>::halfValueAB = 0.0;
-
-const double KoLabColorSpaceMathsTraits<double>::zeroValueL = 0.0;
-const double KoLabColorSpaceMathsTraits<double>::unitValueL = 100.0;
-const double KoLabColorSpaceMathsTraits<double>::halfValueL = 50.0;
-const double KoLabColorSpaceMathsTraits<double>::zeroValueAB = -128.0;
-const double KoLabColorSpaceMathsTraits<double>::unitValueAB = +127.0;
-const double KoLabColorSpaceMathsTraits<double>::halfValueAB = 0.0;

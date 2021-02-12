@@ -85,18 +85,18 @@ template<>
 class KRITAPIGMENT_EXPORT KoCmykColorSpaceMathsTraits<float> : public KoColorSpaceMathsTraits<float>
 {
 public:
-    static const float zeroValueCMYK;
-    static const float unitValueCMYK;
-    static const float halfValueCMYK;
+    static constexpr float zeroValueCMYK = 0.0;
+    static constexpr float unitValueCMYK = 100.0;
+    static constexpr float halfValueCMYK = 50.0;
 };
 
 template<>
 class KRITAPIGMENT_EXPORT KoCmykColorSpaceMathsTraits<double> : public KoColorSpaceMathsTraits<double>
 {
 public:
-    static const double zeroValueCMYK;
-    static const double unitValueCMYK;
-    static const double halfValueCMYK;
+    static constexpr double zeroValueCMYK = 0.0;
+    static constexpr double unitValueCMYK = 100.0;
+    static constexpr double halfValueCMYK = 50.0;
 };
 
 #endif

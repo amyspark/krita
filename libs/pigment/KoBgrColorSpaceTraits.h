@@ -13,11 +13,11 @@
  */
 template<typename _channels_type_>
 struct KoBgrTraits : public KoColorSpaceTrait<_channels_type_, 4, 3> {
-    typedef _channels_type_ channels_type;
-    typedef KoColorSpaceTrait<_channels_type_, 4, 3> parent;
-    static const qint32 red_pos = 2;
-    static const qint32 green_pos = 1;
-    static const qint32 blue_pos = 0;
+    using channels_type = _channels_type_;
+    using parent = KoColorSpaceTrait<_channels_type_, 4, 3>;
+    static constexpr qint32 red_pos = 2;
+    static constexpr qint32 green_pos = 1;
+    static constexpr qint32 blue_pos = 0;
     /**
      * An BGR pixel
      */

@@ -33,9 +33,9 @@ template<class T>
 inline T maskingLinearBurn(T src, T dst) {
     using namespace Arithmetic;
     typedef typename KoColorSpaceMathsTraits<T>::compositetype composite_type;
-    return qBound(composite_type(KoColorSpaceMathsTraits<T>::zeroValue),
+    return qBound(composite_type(KoColorSpaceMathsTraits<T>::min),
                   composite_type(src) + dst - unitValue<T>(),
-                  composite_type(KoColorSpaceMathsTraits<T>::unitValue));
+                  composite_type(KoColorSpaceMathsTraits<T>::max));
 }
 
 /**
@@ -54,9 +54,9 @@ inline T maskingAddition(T src, T dst) {
         return zeroValue<T>();
     }
 
-    return qBound(composite_type(KoColorSpaceMathsTraits<T>::zeroValue),
+    return qBound(composite_type(KoColorSpaceMathsTraits<T>::min),
                   composite_type(src) + dst,
-                  composite_type(KoColorSpaceMathsTraits<T>::unitValue));
+                  composite_type(KoColorSpaceMathsTraits<T>::max));
 }
 
 /**
@@ -72,9 +72,9 @@ inline T maskingSubtract(T src, T dst) {
     typedef typename KoColorSpaceMathsTraits<T>::compositetype composite_type;
     using namespace Arithmetic;
 
-    return qBound(composite_type(KoColorSpaceMathsTraits<T>::zeroValue),
+    return qBound(composite_type(KoColorSpaceMathsTraits<T>::min),
                   composite_type(dst) - src,
-                  composite_type(KoColorSpaceMathsTraits<T>::unitValue));
+                  composite_type(KoColorSpaceMathsTraits<T>::max));
 }
 
 

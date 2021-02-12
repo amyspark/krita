@@ -1,8 +1,9 @@
 /*
- *  SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2006-2007 Cyrille Berger <cberger@cberger.net>
+ * SPDX-FileCopyrightText: 2021 L. E. Segovia <amy@amyspark.me>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
-*/
+ */
 
 #ifndef _KO_COLORSPACE_TRAITS_H_
 #define _KO_COLORSPACE_TRAITS_H_
@@ -41,25 +42,25 @@ struct KoColorSpaceTrait {
     static_assert(_channels_nb_ <= MAX_CHANNELS_NB, "MAX_CHANNELS_NB too small");
 
     /// the type of the value of the channels of this color space
-    typedef _channels_type_ channels_type;
+    using channels_type = _channels_type_;
 
     /// the number of channels in this color space
-    static const quint32 channels_nb = _channels_nb_;
+    static constexpr quint32 channels_nb = _channels_nb_;
 
     /// the position of the alpha channel in the channels of the pixel (or -1 if no alpha
     /// channel.
-    static const qint32 alpha_pos = _alpha_pos_;
+    static constexpr qint32 alpha_pos = _alpha_pos_;
 
     /// the number of bit for each channel
-    static const int depth = KoColorSpaceMathsTraits<_channels_type_>::bits;
+    static constexpr int depth = KoColorSpaceMathsTraits<_channels_type_>::bits;
 
     /// the associated math class
-    typedef KoColorSpaceMathsTraits<_channels_type_> math_trait;
+    using math_trait = KoColorSpaceMathsTraits<_channels_type_>;
 
     /**
      * @return the size in byte of one pixel
      */
-    static const quint32 pixelSize = channels_nb * sizeof(channels_type);
+    static constexpr quint32 pixelSize = channels_nb * sizeof(channels_type);
 
     /**
      * @return the value of the alpha channel for this pixel in the 0..255 range
@@ -158,7 +159,7 @@ struct KoColorSpaceTrait {
             float b = qBound((float)KoColorSpaceMathsTraits<channels_type>::min,
                              (float)KoColorSpaceMathsTraits<channels_type>::unitValue * values[i],
                              (float)KoColorSpaceMathsTraits<channels_type>::max);
-            c = (channels_type)b;
+            c = static_cast<channels_type>(b);
             nativeArray(pixel)[i] = c;
 
         }
