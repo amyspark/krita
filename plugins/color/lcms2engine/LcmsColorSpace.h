@@ -2,7 +2,7 @@
  *  SPDX-FileCopyrightText: 2002 Patrick Julien <freak@codepimps.org>
  *  SPDX-FileCopyrightText: 2005-2006 C. Boemann <cbo@boemann.dk>
  *  SPDX-FileCopyrightText: 2004, 2006-2007 Cyrille Berger <cberger@cberger.net>
- * SPDX-FileCopyrightText: 2020 L. E. Segovia <amy@amyspark.me>
+ * SPDX-FileCopyrightText: 2020-2021 L. E. Segovia <amy@amyspark.me>
  *
  * SPDX-License-Identifier: LGPL-2.1-or-later
  */
@@ -199,14 +199,14 @@ protected:
     {
         KIS_ASSERT(d->profile);
 
-        if (KoLcmsDefaultTransformations::s_RGBProfile == 0) {
+        if (KoLcmsDefaultTransformations::s_RGBProfile == nullptr) {
             KoLcmsDefaultTransformations::s_RGBProfile = cmsCreate_sRGBProfile();
         }
         d->defaultTransformations = KoLcmsDefaultTransformations::s_transformations[this->id()][ d->profile];
         if (!d->defaultTransformations) {
             d->defaultTransformations = new KoLcmsDefaultTransformations;
             d->defaultTransformations->fromRGB = cmsCreateTransform(KoLcmsDefaultTransformations::s_RGBProfile,
-                                                 TYPE_BGR_8,
+                                                 TYPE_BGR_FLT,
                                                  d->profile->lcmsProfile(),
                                                  this->colorSpaceType(),
                                                  KoColorConversionTransformation::internalRenderingIntent(),
@@ -216,7 +216,7 @@ protected:
             d->defaultTransformations->toRGB = cmsCreateTransform(d->profile->lcmsProfile(),
                                                this->colorSpaceType(),
                                                KoLcmsDefaultTransformations::s_RGBProfile,
-                                               TYPE_BGR_8,
+                                               TYPE_BGR_FLT,
                                                KoColorConversionTransformation::internalRenderingIntent(),
                                                KoColorConversionTransformation::internalConversionFlags());
             KIS_SAFE_ASSERT_RECOVER_NOOP(d->defaultTransformations->toRGB);
@@ -242,16 +242,16 @@ public:
         return (p && p->asLcms()->colorSpaceSignature() == colorSpaceSignature());
     }
 
-    void fromQColor(const QColor &color, quint8 *dst, const KoColorProfile *koprofile = 0) const override
+    void fromQColor(const QColor &color, quint8 *dst, const KoColorProfile *koprofile = nullptr) const override
     {
-        std::array<quint8, 3> qcolordata;
+        std::array<float, 3> qcolordata;
 
-        qcolordata[2] = static_cast<quint8>(color.red());
-        qcolordata[1] = static_cast<quint8>(color.green());
-        qcolordata[0] = static_cast<quint8>(color.blue());
+        qcolordata[2] = color.redF();
+        qcolordata[1] = color.greenF();
+        qcolordata[0] = color.blueF();
 
         LcmsColorProfileContainer *profile = asLcmsProfile(koprofile);
-        if (profile == 0) {
+        if (profile == nullptr) {
             // Default sRGB
             KIS_ASSERT(d->defaultTransformations && d->defaultTransformations->fromRGB);
 
@@ -265,7 +265,7 @@ public:
             if (!last) {
                 last.reset(new KisLcmsLastTransformation());
                 last->transform = cmsCreateTransform(
-                    profile->lcmsProfile(), TYPE_BGR_8, d->profile->lcmsProfile(), this->colorSpaceType(), KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
+                    profile->lcmsProfile(), TYPE_BGR_FLT, d->profile->lcmsProfile(), this->colorSpaceType(), KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
                 last->profile = profile->lcmsProfile();
             }
 
@@ -274,15 +274,15 @@ public:
             d->fromRGBCachedTransformations.push(last);
         }
 
-        this->setOpacity(dst, static_cast<quint8>(color.alpha()), 1);
+        this->setOpacity(dst, color.alphaF(), 1);
     }
 
-    void toQColor(const quint8 *src, QColor *c, const KoColorProfile *koprofile = 0) const override
+    void toQColor(const quint8 *src, QColor *c, const KoColorProfile *koprofile = nullptr) const override
     {
-        std::array<quint8, 3> qcolordata;
+        std::array<float, 3> qcolordata;
 
         LcmsColorProfileContainer *profile = asLcmsProfile(koprofile);
-        if (profile == 0) {
+        if (profile == nullptr) {
             // Default sRGB transform
             Q_ASSERT(d->defaultTransformations && d->defaultTransformations->toRGB);
             cmsDoTransform(d->defaultTransformations->toRGB, src, qcolordata.data(), 1);
@@ -295,7 +295,7 @@ public:
             if (!last) {
                 last.reset(new KisLcmsLastTransformation());
                 last->transform = cmsCreateTransform(
-                    d->profile->lcmsProfile(), this->colorSpaceType(), profile->lcmsProfile(), TYPE_BGR_8, KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
+                    d->profile->lcmsProfile(), this->colorSpaceType(), profile->lcmsProfile(), TYPE_BGR_FLT, KoColorConversionTransformation::internalRenderingIntent(), KoColorConversionTransformation::internalConversionFlags());
                 last->profile = profile->lcmsProfile();
             }
 
@@ -303,8 +303,8 @@ public:
             cmsDoTransform(last->transform, src, qcolordata.data(), 1);
             d->toRGBCachedTransformations.push(last);
         }
-        c->setRgb(qcolordata[2], qcolordata[1], qcolordata[0]);
-        c->setAlpha(this->opacityU8(src));
+        c->setRgbF(qcolordata[2], qcolordata[1], qcolordata[0]);
+        c->setAlphaF(this->opacityF(src));
     }
 
     KoColorTransformation *createBrightnessContrastAdjustment(const quint16 *transferValues) const override
