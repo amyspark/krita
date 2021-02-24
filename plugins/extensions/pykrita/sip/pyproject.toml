@@ -1,0 +1,15 @@
+[build-system]
+requires = ["sip >=5, <7"]
+build-backend = "sipbuild.api"
+
+[tool.sip.metadata]
+name = "kritamod"
+
+[tool.sip.project]
+sip-include-dirs = ["@SIP_DEFAULT_SIP_DIR%", "@PYQT5_SIP_DIR@", "@PYQT_SIP_DIR_OVERRIDE@"]
+sip-files-dir = "@PYKRITA_SRCS@"
+dunder-init = true
+verbose = true
+
+[tool.sip.bindings.kritamod]
+libraries = @PYKRITA_LIBRARIES@

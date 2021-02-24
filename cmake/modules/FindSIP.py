@@ -43,11 +43,15 @@ except ImportError:  # Code for SIP v4
     print("default_sip_dir:%s" % default_sip_dir)
     print("sip_inc_dir:%s" % sip_inc_dir)
 else:  # Code for SIP v5
-    print("sip_version:%06.0x" % sipbuild.version.SIP_VERSION)
+    sip_version = sipbuild.version.SIP_VERSION
+
+    print("sip_version:%06.0x" % sip_version)
     print("sip_version_str:%s" % sipbuild.version.SIP_VERSION_STR)
 
     import shutil
-    print("sip_bin:%s" % shutil.which("sip5"))
+
+    # sip v5 and higher need to invoke sip-build
+    print("sip_bin:%s" % shutil.which("sip-build"))
 
     from distutils.sysconfig import get_python_lib
     python_modules_dir = get_python_lib(plat_specific=1)

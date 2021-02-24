@@ -3,10 +3,9 @@ include(SIPMacros)
 message( ${SIP_VERSION} " - The version of SIP found expressed as a 6 digit hex number suitable for comparison as a string.")
 message( ${SIP_VERSION_STR} " - The version of SIP found as a human readable string.")
 message( ${SIP_EXECUTABLE} " - Path and filename of the SIP command line executable.")
+message( ${SIP_DEFAULT_SIP_DIR} " - default SIP dir" )
 IF(${SIP_VERSION_STR} VERSION_LESS 5)
     message( ${SIP_INCLUDE_DIR} " - Directory holding the SIP C++ header file.")
-ENDIF(${SIP_VERSION_STR} VERSION_LESS 5)
-message( ${SIP_DEFAULT_SIP_DIR} " - default SIP dir" )
 
 set(SIP_INCLUDES
     ${SIP_DEFAULT_SIP_DIR}
@@ -33,3 +32,25 @@ if (ENABLE_PYTHON_2)
         ./__init__.py
         DESTINATION ${PYTHON_SITE_PACKAGES_INSTALL_DIR}/PyKrita)
 endif (ENABLE_PYTHON_2)
+else()
+
+message(STATUS "Using SIP v5 for packaging PyKrita.")
+
+set(PYKRITA_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/krita)
+set(PYKRITA_LIBRARIES "[\"kritalibkis\", \"kritaui\", \"kritaimage\", \"kritalibbrush\"]")
+set(PYTHON_SITE_PACKAGES_INSTALL_DIR ${LIB_INSTALL_DIR}/krita-python-libs)
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml 
+    ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml
+)
+add_custom_target(
+    PyKrita.krita
+    ALL
+    COMMAND
+        ${SIP_EXECUTABLE}
+        --build-dir ${CMAKE_CURRENT_BINARY_DIR}
+        --target-dir ${PYTHON_SITE_PACKAGES_INSTALL_DIR}
+    WORKING_DIRECTORY
+        ${CMAKE_CURRENT_BINARY_DIR}
+)
+ENDIF()
