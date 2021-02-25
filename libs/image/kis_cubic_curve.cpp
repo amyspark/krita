@@ -8,10 +8,13 @@
 
 #include "kis_cubic_curve.h"
 
+#include <cstdint>
+
 #include <QPointF>
 #include <QList>
 #include <QSharedData>
 #include <QStringList>
+#include <limits>
 #include "kis_dom_utils.h"
 #include "kis_algebra_2d.h"
 
@@ -501,12 +504,12 @@ void KisCubicCurve::fromString(const QString& string)
 
 const QVector<quint16> KisCubicCurve::uint16Transfer(int size) const
 {
-    d->data->updateTransfer<quint16, int>(&d->data->u16Transfer, d->data->validU16Transfer, 0x0, 0xFFFF, size);
+    d->data->updateTransfer<quint16, int>(&d->data->u16Transfer, d->data->validU16Transfer, std::numeric_limits<quint16>::min(), std::numeric_limits<quint16>::max(), size);
     return d->data->u16Transfer;
 }
 
 const QVector<qreal> KisCubicCurve::floatTransfer(int size) const
 {
-    d->data->updateTransfer<qreal, qreal>(&d->data->fTransfer, d->data->validFTransfer, 0.0, 1.0, size);
+    d->data->updateTransfer<qreal, qreal>(&d->data->fTransfer, d->data->validFTransfer, std::numeric_limits<qreal>::min(), std::numeric_limits<qreal>::min(), size);
     return d->data->fTransfer;
 }
