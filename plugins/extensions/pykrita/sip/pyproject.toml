@@ -1,5 +1,5 @@
 [build-system]
-requires = ["sip >=5, <7"]
+requires = ["sip >=5, <7", "PyQt5"]
 build-backend = "sipbuild.api"
 
 [tool.sip.metadata]
