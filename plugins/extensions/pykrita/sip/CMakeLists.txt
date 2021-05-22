@@ -35,42 +35,71 @@ IF(${SIP_VERSION_STR} VERSION_LESS 5)
 else()
     message(STATUS "Using SIP 5+ for packaging PyKrita.")
 
-    set(PYKRITA_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/krita)
-    
-    set(PYKRITA_INCLUDES "")
-    set(PYKRITA_LIBRARIES "")
-    foreach(_lib kritalibkis kritaui kritaimage)
-        get_target_property(_lib_includes ${_lib} INCLUDE_DIRECTORIES)
-        foreach(_libdir ${_lib_includes})
-            string(APPEND PYKRITA_INCLUDES "\"${_libdir}\", ")
-        endforeach()
-        get_target_property(_lib_includes ${_lib} SOURCE_DIR)
-        string(APPEND PYKRITA_INCLUDES "\"${_lib_includes}\", ")
-        string(APPEND PYKRITA_LIBRARIES "\"${_lib}\", ")
-    endforeach()
-    foreach(_libdir ${Qt5Core_INCLUDE_DIRS})
-        string(APPEND PYKRITA_INCLUDES "\"${_libdir}\", ")
-    endforeach()
+    find_file(sip_generate "sip-generate.py" PATHS ${CMAKE_MODULE_PATH})
 
-    set(PYKRITA_INCLUDES "[ ${PYKRITA_INCLUDES} ]")
-    set(PYKRITA_LIBRARIES "[ ${PYKRITA_LIBRARIES} ]")
+    set(PYKRITA_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/krita)
     set(PYTHON_SITE_PACKAGES_INSTALL_DIR ${LIB_INSTALL_DIR}/krita-python-libs)
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml
         ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml
     )
-    add_custom_target(
-        PyKrita.krita
-        ALL
+    set(_sip_base "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>/krita/")
+    set(_sip_base_libraries
+        ${_sip_base}/bool.cpp
+        ${_sip_base}/apiversions.c
+        ${_sip_base}/array.c
+        ${_sip_base}/descriptors.c
+        ${_sip_base}/int_convertors.c
+        ${_sip_base}/objmap.c
+        ${_sip_base}/qtlib.c
+        ${_sip_base}/siplib.c
+        ${_sip_base}/threads.c
+        ${_sip_base}/voidptr.c
+    )
+    set(_sip_outputs
+        ${_sip_base_libraries}
+        ${_sip_base}/sipkritapart0.cpp
+        ${_sip_base}/sipkritapart1.cpp
+        ${_sip_base}/sipkritapart2.cpp
+        ${_sip_base}/sipkritapart3.cpp
+        ${_sip_base}/sipkritapart4.cpp
+        ${_sip_base}/sipkritapart5.cpp
+        ${_sip_base}/sipkritapart6.cpp
+        ${_sip_base}/sipkritapart7.cpp
+    )
+    add_custom_command(
         COMMAND
-            ${SIP_EXECUTABLE}
-            --verbose
+            ${PYTHON_EXECUTABLE}
+            ${sip_generate}
             --build-dir ${CMAKE_CURRENT_BINARY_DIR}
             --target-dir ${PYTHON_SITE_PACKAGES_INSTALL_DIR}
-            --concatenate 1
+            --concatenate 8
+            --protected-is-public
         WORKING_DIRECTORY
             ${CMAKE_CURRENT_BINARY_DIR}
-        BYPRODUCTS
-            krita.pyd
+        DEPENDS
+            ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml
+        OUTPUT
+            ${_sip_outputs}
     )
+    add_library(python_module_Pykrita_krita SHARED ${_sip_outputs})
+    target_link_libraries(python_module_Pykrita_krita ${PYTHON_LIBRARY})
+    target_link_libraries(python_module_Pykrita_krita kritalibkis kritaui kritaimage)
+    set_target_properties(python_module_Pykrita_krita PROPERTIES PREFIX "" OUTPUT_NAME krita)
+    set_target_properties(python_module_Pykrita_krita PROPERTIES AUTOMOC OFF)
+    set_target_properties(python_module_Pykrita_krita PROPERTIES C_STANDARD 99)
+    set_target_properties(python_module_Pykrita_krita PROPERTIES C_STANDARD_REQUIRED ON)
+
+    if (MINGW)
+        target_compile_definitions(python_module_Pykrita_krita PRIVATE _hypot=hypot)
+    else()
+        target_compile_definitions(python_module_Pykrita_krita PRIVATE SIP_PROTECTED_IS_PUBLIC)
+        target_compile_definitions(python_module_Pykrita_krita PRIVATE protected=public)
+    endif (MINGW)
+
+    if (WIN32)
+        set_target_properties(python_module_Pykrita_krita PROPERTIES SUFFIX ".pyd")
+    endif ()
+
+    install(TARGETS python_module_Pykrita_krita DESTINATION "${PYTHON_SITE_PACKAGES_INSTALL_DIR}/pykrita")
 ENDIF()

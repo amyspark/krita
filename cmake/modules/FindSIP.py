@@ -15,8 +15,6 @@ def osAwareSuffix():
     return os.path.join("lib", "python3.8", "site-packages","sipconfig.py") if os.name != 'nt' else os.path.join("lib","krita-python-libs","sipconfig.py")
 
 try:
-    import sipbuild
-except ImportError:  # Code for SIP v4
     import sipconfig
 
     sipcfg = sipconfig.Configuration()
@@ -43,10 +41,10 @@ except ImportError:  # Code for SIP v4
     print("sip_bin:%s" % sip_bin)
     print("default_sip_dir:%s" % default_sip_dir)
     print("sip_inc_dir:%s" % sip_inc_dir)
-else:  # Code for SIP v5
-    sip_version = sipbuild.version.SIP_VERSION
+except ImportError:  # Code for SIP v5+
+    import sipbuild
 
-    print("sip_version:%06.0x" % sip_version)
+    print("sip_version:%06.0x" % sipbuild.version.SIP_VERSION)
     print("sip_version_str:%s" % sipbuild.version.SIP_VERSION_STR)
 
     import shutil

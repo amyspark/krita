@@ -8,10 +8,4 @@ name = "kritamod"
 [tool.sip.project]
 sip-include-dirs = ["@PYQT5_SIP_DIR@"]
 sip-files-dir = "@PYKRITA_SRCS@"
-dunder-init = true
-verbose = true
 abi-version = "12"
-
-[tool.sip.bindings.kritamod]
-include-dirs = @PYKRITA_INCLUDES@
-libraries = @PYKRITA_LIBRARIES@
