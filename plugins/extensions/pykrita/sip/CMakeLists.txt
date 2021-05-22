@@ -36,7 +36,24 @@ else()
     message(STATUS "Using SIP 5+ for packaging PyKrita.")
 
     set(PYKRITA_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/krita)
-    set(PYKRITA_LIBRARIES "[\"kritalibkis\", \"kritaui\", \"kritaimage\", \"kritalibbrush\"]")
+    
+    set(PYKRITA_INCLUDES "")
+    set(PYKRITA_LIBRARIES "")
+    foreach(_lib kritalibkis kritaui kritaimage)
+        get_target_property(_lib_includes ${_lib} INCLUDE_DIRECTORIES)
+        foreach(_libdir ${_lib_includes})
+            string(APPEND PYKRITA_INCLUDES "\"${_libdir}\", ")
+        endforeach()
+        get_target_property(_lib_includes ${_lib} SOURCE_DIR)
+        string(APPEND PYKRITA_INCLUDES "\"${_lib_includes}\", ")
+        string(APPEND PYKRITA_LIBRARIES "\"${_lib}\", ")
+    endforeach()
+    foreach(_libdir ${Qt5Core_INCLUDE_DIRS})
+        string(APPEND PYKRITA_INCLUDES "\"${_libdir}\", ")
+    endforeach()
+
+    set(PYKRITA_INCLUDES "[ ${PYKRITA_INCLUDES} ]")
+    set(PYKRITA_LIBRARIES "[ ${PYKRITA_LIBRARIES} ]")
     set(PYTHON_SITE_PACKAGES_INSTALL_DIR ${LIB_INSTALL_DIR}/krita-python-libs)
     configure_file(
         ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml
@@ -47,9 +64,13 @@ else()
         ALL
         COMMAND
             ${SIP_EXECUTABLE}
+            --verbose
             --build-dir ${CMAKE_CURRENT_BINARY_DIR}
             --target-dir ${PYTHON_SITE_PACKAGES_INSTALL_DIR}
+            --concatenate 1
         WORKING_DIRECTORY
             ${CMAKE_CURRENT_BINARY_DIR}
+        BYPRODUCTS
+            krita.pyd
     )
 ENDIF()

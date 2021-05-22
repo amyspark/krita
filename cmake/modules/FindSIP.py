@@ -1,6 +1,7 @@
 # FindSIP.py
 #
 # SPDX-FileCopyrightText: 2007 Simon Edwards <simon@simonzone.com>
+# SPDX-FileCopyrightText: 2021 L. E. Segovia <amy@amyspark.me>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
