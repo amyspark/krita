@@ -52,4 +52,4 @@ print("pyqt_sip_dir:%s" % pyqt_sip_dir)
 print("pyqt_sip_flags:%s" % PyQt5.QtCore.PYQT_CONFIGURATION["sip_flags"])
 
 tags = re.findall(r"-t ([^\s]+)", PyQt5.QtCore.PYQT_CONFIGURATION["sip_flags"])
-print("pyqt_sip_tags:%s" % repr(tags))
+print("pyqt_sip_tags:%s" % ",".join(tags))
