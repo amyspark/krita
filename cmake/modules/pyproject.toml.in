@@ -3,9 +3,13 @@ requires = ["sip >=5, <7", "PyQt5"]
 build-backend = "sipbuild.api"
 
 [tool.sip.metadata]
-name = "kritamod"
+name = "@module_name@"
 
 [tool.sip.project]
+sip-module = "@PYQT5_SIP_NAME@"
 sip-include-dirs = ["@PYQT5_SIP_DIR@"]
-sip-files-dir = "@PYKRITA_SRCS@"
+sip-files-dir = "@module_srcs@"
 abi-version = "12"
+
+[tool.sip.bindings.@module_name@]
+tags = @PYQT5_SIP_TAGS@

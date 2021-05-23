@@ -36,26 +36,17 @@ else()
     message(STATUS "Using SIP 5+ for packaging PyKrita.")
 
     find_file(sip_generate "sip-generate.py" PATHS ${CMAKE_MODULE_PATH})
+    find_file(pyproject_toml "pyproject.toml.in" PATHS ${CMAKE_MODULE_PATH})
 
-    set(PYKRITA_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/krita)
+    set(module_name "kritamod")
+    set(module_srcs "${CMAKE_CURRENT_SOURCE_DIR}/krita")
     set(PYTHON_SITE_PACKAGES_INSTALL_DIR ${LIB_INSTALL_DIR}/krita-python-libs)
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/pyproject.toml
+        ${pyproject_toml}
         ${CMAKE_CURRENT_BINARY_DIR}/pyproject.toml
     )
-    set(_sip_base "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>/krita/")
-    set(_sip_base_libraries
-        ${_sip_base}/bool.cpp
-        ${_sip_base}/apiversions.c
-        ${_sip_base}/array.c
-        ${_sip_base}/descriptors.c
-        ${_sip_base}/int_convertors.c
-        ${_sip_base}/objmap.c
-        ${_sip_base}/qtlib.c
-        ${_sip_base}/siplib.c
-        ${_sip_base}/threads.c
-        ${_sip_base}/voidptr.c
-    )
+    set(_tmp_build_dir "${CMAKE_CURRENT_BINARY_DIR}/_tmp/")
+    set(_sip_base "${_tmp_build_dir}/krita/")
     set(_sip_outputs
         ${_sip_base_libraries}
         ${_sip_base}/sipkritapart0.cpp
@@ -71,7 +62,7 @@ else()
         COMMAND
             ${PYTHON_EXECUTABLE}
             ${sip_generate}
-            --build-dir ${CMAKE_CURRENT_BINARY_DIR}
+            --build-dir ${_tmp_build_dir}
             --target-dir ${PYTHON_SITE_PACKAGES_INSTALL_DIR}
             --concatenate 8
             --protected-is-public
@@ -83,10 +74,10 @@ else()
             ${_sip_outputs}
     )
     add_library(python_module_Pykrita_krita SHARED ${_sip_outputs})
+    target_include_directories(python_module_Pykrita_krita PRIVATE ${_tmp_build_dir})
     target_link_libraries(python_module_Pykrita_krita ${PYTHON_LIBRARY})
     target_link_libraries(python_module_Pykrita_krita kritalibkis kritaui kritaimage)
     set_target_properties(python_module_Pykrita_krita PROPERTIES PREFIX "" OUTPUT_NAME krita)
-    set_target_properties(python_module_Pykrita_krita PROPERTIES AUTOMOC OFF)
     set_target_properties(python_module_Pykrita_krita PROPERTIES C_STANDARD 99)
     set_target_properties(python_module_Pykrita_krita PROPERTIES C_STANDARD_REQUIRED ON)
 
@@ -101,5 +92,5 @@ else()
         set_target_properties(python_module_Pykrita_krita PROPERTIES SUFFIX ".pyd")
     endif ()
 
-    install(TARGETS python_module_Pykrita_krita DESTINATION "${PYTHON_SITE_PACKAGES_INSTALL_DIR}/pykrita")
+    install(TARGETS python_module_Pykrita_krita DESTINATION "${PYTHON_SITE_PACKAGES_INSTALL_DIR}/PyKrita")
 ENDIF()

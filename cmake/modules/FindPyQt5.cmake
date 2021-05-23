@@ -1,6 +1,7 @@
 # Find PyQt5
 # ~~~~~~~~~~
 # SPDX-FileCopyrightText: 2014 Simon Edwards <simon@simonzone.com>
+# SPDX-FileCopyrightText: 2021 L. E. Segovia <amy@amyspark.me>
 #
 # SPDX-License-Identifier: BSD-3-Clause
 #
@@ -49,6 +50,7 @@ ELSE(EXISTS PYQT5_VERSION)
     STRING(REGEX REPLACE ".*\npyqt_version_tag:([^\n]+).*$" "\\1" PYQT5_VERSION_TAG ${pyqt5_config})
     STRING(REGEX REPLACE ".*\npyqt_sip_dir:([^\n]+).*$" "\\1" PYQT5_SIP_DIR ${pyqt5_config})
     STRING(REGEX REPLACE ".*\npyqt_sip_flags:([^\n]+).*$" "\\1" PYQT5_SIP_FLAGS ${pyqt5_config})
+    STRING(REGEX REPLACE ".*\npyqt_sip_tags:([^\n]+).*$" "\\1" PYQT5_SIP_TAGS ${pyqt5_config})
     IF(${pyqt5_config} MATCHES pyqt_sip_name)
       STRING(REGEX REPLACE ".*\npyqt_sip_name:([^\n]+).*$" "\\1" PYQT5_SIP_NAME ${pyqt5_config})
     ENDIF(${pyqt5_config} MATCHES pyqt_sip_name)
